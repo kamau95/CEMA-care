@@ -31,6 +31,15 @@ app.get('/search-client', (req, res)=>{
 app.get('/create-program', (req, res)=>{
   res.render('create-program');
 });
+
+app.get('/register-client', (req, res)=>{
+  res.render('register-client');
+});
+
+app.get('/enroll-client', (req, res)=>{
+  res.render('enroll-client');
+});
+
 //app listen
 const port= process.env.PORT;
 app.listen(port, ()=> console.log(`The app is listening on port ${port}`));

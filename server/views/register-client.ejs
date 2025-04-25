@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Register a New Client - Health Program Management</title>
+  <link rel="stylesheet" href="/css/register-client.css">
+</head>
+<body>
+  <div class="container">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <h1 class="sidebar-title">Health Program</h1>
+      <nav>
+        <ul>
+          <li class="sidebar-item">
+            <a href="create-program" class="sidebar-link">Create a Health Program</a>
+          </li>
+          <li class="sidebar-item active">
+            <a href="register-client" class="sidebar-link">Register a New Client</a>
+          </li>
+          <li class="sidebar-item">
+            <a href="enroll-client" class="sidebar-link">Enroll a Client in Programs</a>
+          </li>
+          <li class="sidebar-item">
+            <a href="search-client" class="sidebar-link">Search for a Client</a>
+          </li>
+          <li class="sidebar-item">
+            <a href="search-client" class="sidebar-link">View Client Profile</a>
+          </li>
+        </ul>
+      </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+      <div class="form-container">
+        <h2 class="form-title">Register a New Client</h2>
+        <div class="form">
+          <div class="form-group">
+            <label for="client-name" class="form-label">Name</label>
+            <input
+              type="text"
+              id="client-name"
+              class="form-input"
+              placeholder="e.g., John Doe"
+              required
+            >
+          </div>
+          <div class="form-group">
+            <label for="client-age" class="form-label">Age</label>
+            <input
+              type="number"
+              id="client-age"
+              class="form-input"
+              placeholder="e.g., 30"
+              min="0"
+              required
+            >
+          </div>
+          <div class="form-group">
+            <label for="client-gender" class="form-label">Gender</label>
+            <select
+              id="client-gender"
+              class="form-select"
+              required
+            >
+              <option value="">Select Gender</option>
+              <option value="Male">Male</option>
+              <option value="Female">Female</option>
+              <option value="Other">Other</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="client-contact" class="form-label">Contact</label>
+            <input
+              type="text"
+              id="client-contact"
+              class="form-input"
+              placeholder="e.g., john@example.com or +1234567890"
+              required
+            >
+          </div>
+          <button id="register-client-btn" class="form-button">Register Client</button>
+        </div>
+      </div>
+    </main>
+  </div>
+</body>
+</html>
