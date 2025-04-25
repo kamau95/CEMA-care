@@ -39,3 +39,6 @@ CREATE TABLE IF NOT EXISTS enrollment(
         ON DELETE CASCADE
         ON UPDATE CASCADE
 );
+
+/*this will act as password before i set the admin page*/
+INSERT INTO medics(username, password) VALUES('admin', 'admin');

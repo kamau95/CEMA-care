@@ -21,9 +21,16 @@ app.use(express.static('public'));
 
 //routes
 app.get('/', (req, res) => {
-    res.render('index');
+    res.render('login');
   });
 
+app.get('/search-client', (req, res)=>{
+  res.render('search-client');
+});
+
+app.get('/create-program', (req, res)=>{
+  res.render('create-program');
+});
 //app listen
 const port= process.env.PORT;
 app.listen(port, ()=> console.log(`The app is listening on port ${port}`));

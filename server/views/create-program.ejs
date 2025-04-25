@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Create a Health Program - Health Program Management</title>
+  <link rel="stylesheet" href="css/create-program.css">
+</head>
+<body>
+  <div class="container">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <h1 class="sidebar-title">Health Program</h1>
+      <nav>
+        <ul>
+          <li class="sidebar-item active">
+            <a href="#" class="sidebar-link">Create a Health Program</a>
+          </li>
+          <li class="sidebar-item">
+            <a href="register-client.html" class="sidebar-link">Register a New Client</a>
+          </li>
+          <li class="sidebar-item">
+            <a href="enroll-client.html" class="sidebar-link">Enroll a Client in Programs</a>
+          </li>
+          <li class="sidebar-item">
+            <a href="search-client.html" class="sidebar-link">Search for a Client</a>
+          </li>
+          <li class="sidebar-item">
+            <a href="search-client.html" class="sidebar-link">View Client Profile</a>
+          </li>
+          <li class="sidebar-item">
+            <a href="api-client.html" class="sidebar-link">Expose Client Profile via API</a>
+          </li>
+        </ul>
+      </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+      <div class="form-container">
+        <h2 class="form-title">Create a Health Program</h2>
+        <div class="form">
+          <div class="form-group">
+            <label for="program-name" class="form-label">Program Name</label>
+            <input
+              type="text"
+              id="program-name"
+              class="form-input"
+              placeholder="e.g., Tuberculosis"
+              required
+            >
+          </div>
+          <div class="form-group">
+            <label for="treatment" class="form-label">Treatment Plan</label>
+            <textarea
+              id="treatment"
+              class="form-textarea"
+              rows="4"
+              placeholder="e.g., Rifampicin, Isoniazid for 6 months"
+              required
+            ></textarea>
+          </div>
+          <div class="form-group">
+            <label for="follow-ups" class="form-label">Follow-Up Schedule</label>
+            <textarea
+              id="follow-ups"
+              class="form-textarea"
+              rows="4"
+              placeholder="e.g., Monthly sputum tests"
+              required
+            ></textarea>
+          </div>
+          <button id="create-program-btn" class="form-button">Create Program</button>
+        </div>
+      </div>
+    </main>
+  </div>
+</body>
+</html>
