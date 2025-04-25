@@ -3,22 +3,22 @@ CREATE DATABASE IF NOT EXISTS cema;
 USE cema;
 
 /*table for medics*/
-CREATE TABLE IF NOT EXISTS medic(
+CREATE TABLE IF NOT EXISTS medics(
     id INT AUTO_INCREMENT PRIMARY KEY,
     username VARCHAR(50) UNIQUE NOT NULL,
     password VARCHAR(255) NOT NULL
 );
 
 /*table for health programs*/
-CREATE TABLE IF NOT EXISTS program(
-    id INT AUTO_INCREMENT PRIMARY KEY,
+CREATE TABLE IF NOT EXISTS programs(
+    id INT AUTO_INCREMENT PRIMARY KEY UNIQUE NOT NULL,
     name VARCHAR(50) NOT NULL,
     treatments TEXT,
     follow_up_notes TEXT
 );
 
 /*client table*/
-CREATE TABLE IF NOT EXISTS client(
+CREATE TABLE IF NOT EXISTS clients(
     id INT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(50) NOT NULL,
     age INT,
@@ -32,10 +32,10 @@ CREATE TABLE IF NOT EXISTS enrollment(
     client_id  INT,
     program_id INT,
     enrollment_date DATETIME NOT NULL,
-    FOREIGN KEY (client_id) REFERENCES client(id)
+    FOREIGN KEY (client_id) REFERENCES clients(id)
         ON DELETE CASCADE
         ON UPDATE CASCADE,
-    FOREIGN KEY (program_id) REFERENCES program(id)
+    FOREIGN KEY (program_id) REFERENCES programs(id)
         ON DELETE CASCADE
         ON UPDATE CASCADE
 );
