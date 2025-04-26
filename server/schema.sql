@@ -1,7 +1,6 @@
 /*form the db*/
-CREATE DATABASE IF NOT EXISTS cema;
-USE cema;
-
+CREATE DATABASE IF NOT EXISTS cema_care;
+USE cema_care;
 /*table for medics*/
 CREATE TABLE IF NOT EXISTS medics(
     id INT AUTO_INCREMENT PRIMARY KEY,
@@ -28,10 +27,10 @@ CREATE TABLE IF NOT EXISTS clients(
 
 /*table for enrollments*/
 CREATE TABLE IF NOT EXISTS enrollment(
-    id int AUTO_INCREMENT PRIMARY KEY,
-    client_id  INT,
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    client_id INT,
     program_id INT,
-    enrollment_date DATETIME NOT NULL,
+    enrollment_date DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (client_id) REFERENCES clients(id)
         ON DELETE CASCADE
         ON UPDATE CASCADE,
@@ -39,6 +38,4 @@ CREATE TABLE IF NOT EXISTS enrollment(
         ON DELETE CASCADE
         ON UPDATE CASCADE
 );
-
-/*this will act as password before i set the admin page*/
-INSERT INTO medics(username, password) VALUES('admin', 'admin');
+insert into medics(username, password) values('admin', 'admin');

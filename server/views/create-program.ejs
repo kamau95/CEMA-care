@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Create a Health Program - Health Program Management</title>
-  <link rel="stylesheet" href="css/create-program.css">
+  <link rel="stylesheet" href="/css/create-program.css">
 </head>
 <body>
   <div class="container">
@@ -14,7 +14,7 @@
       <nav>
         <ul>
           <li class="sidebar-item active">
-            <a href="#" class="sidebar-link">Create a Health Program</a>
+            <a href="/create-program" class="sidebar-link">Create a Health Program</a>
           </li>
           <li class="sidebar-item">
             <a href="register-client" class="sidebar-link">Register a New Client</a>
@@ -36,7 +36,7 @@
     <main class="main-content">
       <div class="form-container">
         <h2 class="form-title">Create a Health Program</h2>
-        <div class="form">
+        <form class="form">
           <div class="form-group">
             <label for="program-name" class="form-label">Program Name</label>
             <input
@@ -67,10 +67,13 @@
               required
             ></textarea>
           </div>
-          <button id="create-program-btn" class="form-button">Create Program</button>
-        </div>
+          <button type="submit" id="create-program-btn" class="form-button">Create Program</button>
+          <p id="error-message" class="error-message" style="color: red; display: block; min-height: 20px;"></p>
+        </form>
       </div>
     </main>
+
   </div>
+  <script src="/js/create-program.js"></script>
 </body>
 </html>

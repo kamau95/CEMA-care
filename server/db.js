@@ -99,7 +99,7 @@ export async function addProgram(name, treatments = '', follow_up_notes = '') {
   }
 
 //function to enroll client inside a program
-export async function enrollClient(name, gender, age, contact, programName, treatments = '', follow_up_notes = '') {
+/*export async function enrollClient(name, gender, age, contact, programName, treatments = '', follow_up_notes = '') {
     try {
       let client_id, program_id;
   
@@ -150,4 +150,60 @@ export async function enrollClient(name, gender, age, contact, programName, trea
       console.error('Error enrolling client:', err);
       throw err;
     }
-  }
+  }*/
+export async function enrollClient(contact, programName, treatments = '', follow_up_notes= '') {
+  try {
+    let client_id, program_id;
+  
+    // Check for existing client using unique contact
+    const [clientRows] = await pool.query(
+      'SELECT id FROM clients WHERE contact = ?',
+      [contact]
+    );
+    if (clientRows.length === 0) {
+      console.log('Client not found:', contact);
+      return { success: false, message: 'Client not found. Please add client before enrolling.' };
+    }
+    client_id = clientRows[0].id;
+  
+    // Check for existing program using unique name
+    const [programRows] = await pool.query(
+      'SELECT id FROM programs WHERE name = ?',
+      [programName]
+    );
+    if (programRows.length > 0) {
+    program_id = programRows[0].id;
+    } else {
+      const newProgram = await addProgram(programName, treatments, follow_up_notes);
+      if (!newProgram?.id) throw new Error('Failed to add program');
+        program_id = newProgram.id;
+      }
+  
+      // Check for existing enrollment to prevent duplicates
+      const [enrollmentRows] = await pool.query(
+        'SELECT * FROM enrollment WHERE client_id = ? AND program_id = ?',
+        [client_id, program_id]
+      );
+      if (enrollmentRows.length > 0) {
+        console.log('Client already enrolled:', contact, programName);
+        return { success: false, message: 'Client already enrolled in this program' };
+      }
+  
+      // Enroll client into program
+      const [enrollmentResult] = await pool.query(
+        'INSERT INTO enrollment (client_id, program_id) VALUES (?, ?)',
+        [client_id, program_id]
+      );
+  
+      console.log('Client enrolled successfully!');
+      return {
+        success: true,
+        enrollment_id: enrollmentResult.insertId,
+        client_id,
+        program_id,
+      };
+      } catch (err) {
+        console.error('Error enrolling client:', err);
+        throw err;
+      }
+}

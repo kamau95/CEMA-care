@@ -36,7 +36,7 @@
     <main class="main-content">
       <div class="form-container">
         <h2 class="form-title">Register a New Client</h2>
-        <div class="form">
+        <form class="form">
           <div class="form-group">
             <label for="client-name" class="form-label">Name</label>
             <input
@@ -81,10 +81,12 @@
               required
             >
           </div>
-          <button id="register-client-btn" class="form-button">Register Client</button>
-        </div>
+          <button type="submit" id="register-client-btn" class="form-button">Register Client</button>
+          <p id="error-message" class="error-message" style="color: red; display: block; min-height: 20px;"></p>
+        </form>
       </div>
     </main>
   </div>
+  <script src="/js/register-client.js"></script>
 </body>
 </html>

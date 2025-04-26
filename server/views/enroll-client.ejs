@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Enroll a Client in Programs - Health Program Management</title>
-  <link rel="stylesheet" href="/css/enroll-client.css"
+  <link rel="stylesheet" href="/css/enroll-client.css">
 </head>
 <body>
   <div class="container">
@@ -14,19 +14,19 @@
       <nav>
         <ul>
           <li class="sidebar-item">
-            <a href="create-program" class="sidebar-link">Create a Health Program</a>
+            <a href="/create-program" class="sidebar-link">Create a Health Program</a>
           </li>
           <li class="sidebar-item">
-            <a href="register-client" class="sidebar-link">Register a New Client</a>
+            <a href="/register-client" class="sidebar-link">Register a New Client</a>
           </li>
           <li class="sidebar-item active">
-            <a href="#" class="sidebar-link">Enroll a Client in Programs</a>
+            <a href="/enroll-client" class="sidebar-link">Enroll a Client in Programs</a>
           </li>
           <li class="sidebar-item">
-            <a href="search-client" class="sidebar-link">Search for a Client</a>
+            <a href="/search-client" class="sidebar-link">Search for a Client</a>
           </li>
           <li class="sidebar-item">
-            <a href="search-client" class="sidebar-link">View Client Profile</a>
+            <a href="/search-client" class="sidebar-link">View Client Profile</a>
           </li>
         </ul>
       </nav>
@@ -36,36 +36,37 @@
     <main class="main-content">
       <div class="form-container">
         <h2 class="form-title">Enroll a Client in Programs</h2>
-        <div class="form">
+        <form class="form" id="enroll-form">
           <div class="form-group">
-            <label for="client-search" class="form-label">Search Client</label>
+            <label for="client-contact" class="form-label">Client Contact</label>
             <input
               type="text"
-              id="client-search"
+              id="client-contact"
               class="form-input"
-              list="client-list"
-              placeholder="e.g., John Doe"
+              placeholder="e.g., john@example.com or +1234567890"
               required
             >
-            <datalist id="client-list">
-              <!-- Options to be populated dynamically via JavaScript -->
-            </datalist>
           </div>
           <div class="form-group">
-            <label for="program-select" class="form-label">Select Program</label>
-            <select
-              id="program-select"
-              class="form-select"
+            <label for="program-name" class="form-label">Program Name</label>
+            <input
+              type="text"
+              id="program-name"
+              class="form-input"
+              list="program-list"
+              placeholder="e.g., Tuberculosis"
               required
             >
-              <option value="">Select Program</option>
-              <!-- Options to be populated dynamically via JavaScript -->
-            </select>
+            <datalist id="program-list">
+              <!-- Options populated dynamically via JavaScript -->
+            </datalist>
           </div>
-          <button id="enroll-client-btn" class="form-button">Enroll Client</button>
-        </div>
+          <button type="submit" id="enroll-client-btn" class="form-button">Enroll Client</button>
+          <p id="error-message" class="error-message" style="color: red; display: block; min-height: 20px;"></p>
+        </form>
       </div>
     </main>
   </div>
+  <script src="/js/enroll-client.js"></script>
 </body>
 </html>
