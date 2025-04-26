@@ -3,21 +3,29 @@ import {pool} from '../db.js';
 
 export const verifyPassword= async(req, res, next)=>{
     const{username, password}= req.body;
+    console.log('Verifying login for:', { username });
+
     if(!username || !password){
-        return res.render('login', {err: 'missing email or password', FormData: req.body})
+        console.log('Missing credentials');
+        return res.status(400).json({ success: false, message: 'Missing username or password' });
     }
     try{
         const[rows]= await pool.query('SELECT id, username, password FROM medics WHERE username=?', [username]);
-        if(rows.length === 0){
-            res.render('login', {err: 'invalid username or password', FormData: req.body})
+        console.log('Database query result:', rows);
 
+        if(rows.length === 0){
+            console.log('No user found for username:', username);
+            return res.status(401).json({ success: false, message: 'Invalid username or password' });
         }
 
         const user= rows[0];
-        const match= await bcrypt.compare(password, user.password);
+        //const match= await bcrypt.compare(password, user.password);
+        const match = password === user.password;
+        console.log('Password match:', match);
 
         if(!match){
-            res.render('login', {err: 'invalid password', FormData: req.body});
+            console.log('Invalid password for username:', username);
+            return res.status(401).json({ success: false, message: 'Invalid username or password' });
         }
 
         //credentials are now valid- let create a session
@@ -27,14 +35,17 @@ export const verifyPassword= async(req, res, next)=>{
         //call the next middleware
         next();
     }catch(error){
-        return res.render('login', {err: 'interal server error', FormData: req.body});
+        console.error('Verification error:', error);
+        return res.status(500).json({ success: false, message: 'Server error' });
     }
 };
 
 //check if medic is authenticated
-export const authenticated= async(req, res, next)=>{
+export const isAuthenticated= async(req, res, next)=>{
     if(req.session && req.session.userId){
-        next()//continue to the next middleware
+        console.log('User is authenticated:', req.session.userId);
+        return next()//continue to the next middleware
     }
+    console.log('User not authenticated, redirecting to /login');
     res.redirect('/login');
 }

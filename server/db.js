@@ -17,7 +17,7 @@ export const pool= mysql.createPool({
     ssl: {
         rejectUnauthorized: false
     }
-}).promise()
+});
 
 //test if connection is successful
 pool.getConnection()
