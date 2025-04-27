@@ -38,4 +38,13 @@ CREATE TABLE IF NOT EXISTS enrollment(
         ON DELETE CASCADE
         ON UPDATE CASCADE
 );
-insert into medics(username, password) values('admin', 'admin');
+
+/*session table*/
+CREATE TABLE sessions (
+    session_id VARCHAR(128) PRIMARY KEY,
+    expires INT UNSIGNED NOT NULL,
+    data TEXT
+);
+
+/*test data*/
+insert into medics(username, password) values('admin', '$2b$10$Ug64TBFRH3asJd322O8Ze.PkWn8Td9f0V4m7S/NQIFB1eI7m2am3W');

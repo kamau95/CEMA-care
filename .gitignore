@@ -1,5 +1,9 @@
 # Node modules
 node_modules/
+*/node_modules/
+npm-debug.log
+yarn-error.log
+package-lock.json
 
 # .env files
 .env
@@ -12,4 +16,27 @@ yarn-error.log*
 # OS/system files
 .DS_Store
 Thumbs.db
+
+
+# Environment files
+.env
+.env.local
+.env.development
+.env.test
+.env.production
+certs/ca.pem
+
+# Temporary files
+*.swp
+*.swo
+*~
+
+# Render-specific
+.render/
+
+# Docker
+Dockerfile.dev
+docker-compose.yml
+*.dockerignore
+
 

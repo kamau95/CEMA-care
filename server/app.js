@@ -1,7 +1,11 @@
 import express from "express";
 import dotenv from "dotenv";
 import session from "express-session";
+import MySQLStoreFactory from "express-mysql-session";
 import { pool } from "./db.js";
+
+// Initialize MySQL session store
+const MySQLStore = MySQLStoreFactory(session);
 
 // Load env variables first
 dotenv.config();
@@ -26,14 +30,27 @@ app.set("views", "views");
 // Serve static files from the 'public' directory
 app.use(express.static("public"));
 
+//api key middleware
+const verifyApiKey = (req, res, next) => {
+  const apiKey = req.headers['x-api-key'];
+  if (apiKey && apiKey === process.env.API_KEY) {
+    console.log("API key validated successfully");
+    next();
+  } else {
+    console.log("Invalid or missing API key:", apiKey);
+    res.status(401).json({ success: false, message: "Invalid or missing API key" });
+  }
+};
+
 //Session middleware setup
 app.use(
   session({
-    secret: process.env.SESSION_SECRET, // ⚡ keep this secret safe
+    secret: process.env.SESSION_SECRET,
     resave: false, // Don't save session if unmodified
     saveUninitialized: false, // Don't create session until something stored
+    store: new MySQLStore({}, pool),//use existing pool
     cookie: {
-      secure: false, // Set true if you're using HTTPS
+      secure: process.env.NODE_ENV === "production" ? true : false, 
       maxAge: 1000 * 60 * 60 * 2, // 2 hours session duration
     },
   })
@@ -135,10 +152,6 @@ app.post("/login", verifyPassword, (req, res) => {
   res.json({ success: true, redirectUrl: "/search-client" });
 });
 
-app.get("/search-client", isAuthenticated, (req, res) => {
-  res.render("search-client");
-});
-
 app.get("/create-program", isAuthenticated, (req, res) => {
   res.render("create-program");
 });
@@ -229,6 +242,57 @@ app.get('/programs', isAuthenticated, async (req, res) => {
   } catch (error) {
       console.error('Error fetching programs:', error);
       res.status(500).json({ success: false, message: 'Server error' });
+  }
+});
+
+// New API route with API key authentication
+app.get("/api/client-profile/:id", verifyApiKey, async (req, res) => {
+  const { id } = req.params;
+
+  // Validate ID as a positive integer
+  if (!/^\d+$/.test(id)) {
+    console.log("Invalid client ID:", id);
+    return res.status(400).json({
+      success: false,
+      message: "Invalid client ID",
+    });
+  }
+
+  try {
+    // Fetch client details
+    const [clients] = await pool.query(
+      'SELECT id, name, age, gender, contact FROM clients WHERE id = ?',
+      [id]
+    );
+    if (clients.length === 0) {
+      console.log("Client not found for id:", id);
+      return res.status(404).json({
+        success: false,
+        message: "Client not found",
+      });
+    }
+
+    // Fetch enrolled programs
+    const [programs] = await pool.query(
+      `SELECT p.name, e.enrollment_date
+       FROM enrollment e
+       JOIN programs p ON e.program_id = p.id
+       WHERE e.client_id = ?`,
+      [id]
+    );
+
+    console.log("Client profile fetched for API:", { client: clients[0], programs });
+    return res.status(200).json({
+      success: true,
+      client: clients[0],
+      programs,
+    });
+  } catch (error) {
+    console.error("Error fetching client profile for API:", error);
+    return res.status(500).json({
+      success: false,
+      message: "Server error",
+    });
   }
 });
 

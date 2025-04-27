@@ -5,6 +5,9 @@ import bcrypt from 'bcrypt';
 //load environment variables
 dotenv.config();
 
+// Decode base64-encoded CA cert
+const dec = Buffer.from(process.env.DB_SSL_CA_BASE64, 'base64').toString('utf-8');
+
 
 //database connection
 export const pool= mysql.createPool({
@@ -14,8 +17,10 @@ export const pool= mysql.createPool({
     host: process.env.DB_HOST,
     user: process.env.DB_USER,
     password: process.env.DB_PASSWORD,
+    waitForConnections: true,
     ssl: {
-        rejectUnauthorized: false
+      ca: dec,
+      rejectUnauthorized: true
     }
 });
 
@@ -98,59 +103,6 @@ export async function addProgram(name, treatments = '', follow_up_notes = '') {
     }
   }
 
-//function to enroll client inside a program
-/*export async function enrollClient(name, gender, age, contact, programName, treatments = '', follow_up_notes = '') {
-    try {
-      let client_id, program_id;
-  
-      // Check for existing client using unique contact
-      const [clientRows] = await pool.query(
-        'SELECT id FROM clients WHERE contact = ?',
-        [contact]
-      );
-  
-      if (clientRows.length > 0) {
-        client_id = clientRows[0].id;
-      } else {
-        const newClient = await addClient(name, gender, age, contact);
-        if (!newClient?.id) throw new Error('Failed to add client');
-        client_id = newClient.id;
-      }
-  
-      // Check for existing program using unique name
-      const [programRows] = await pool.query(
-        'SELECT id FROM programs WHERE name = ?',
-        [programName]
-      );
-  
-      if (programRows.length > 0) {
-        program_id = programRows[0].id;
-      } else {
-        const newProgram = await addProgram(programName, treatments, follow_up_notes);
-        if (!newProgram?.id) throw new Error('Failed to add client');
-        program_id = newProgram.id;
-      }
-  
-      // Enroll client into program
-      const enrollment_date = new Date();
-      const [enrollmentResult] = await pool.query(
-        'INSERT INTO enrollment (client_id, program_id, enrollment_date) VALUES (?, ?, ?)',
-        [client_id, program_id, enrollment_date]
-      );
-  
-      console.log('Client enrolled successfully!');
-      return {
-        enrollment_id: enrollmentResult.insertId,
-        client_id,
-        program_id,
-        enrollment_date
-      };
-  
-    } catch (err) {
-      console.error('Error enrolling client:', err);
-      throw err;
-    }
-  }*/
 export async function enrollClient(contact, programName, treatments = '', follow_up_notes= '') {
   try {
     let client_id, program_id;

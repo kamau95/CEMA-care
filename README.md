@@ -6,3 +6,7 @@ Enroll clients in one or more programs.
 Search for clients by name.
 View client profiles with enrolled programs.
 Expose client profiles via a REST API.
+
+
+please!!
+for testing  use admin as password and username
