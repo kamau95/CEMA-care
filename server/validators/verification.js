@@ -19,8 +19,8 @@ export const verifyPassword= async(req, res, next)=>{
         }
 
         const user= rows[0];
-        const match= await bcrypt.compare(password, user.password);
-        //const match = password === user.password;
+        //const match= await bcrypt.compare(password, user.password);
+        const match = password === user.password;
         console.log('Password match:', match);
 
         if(!match){
