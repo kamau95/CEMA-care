@@ -12,6 +12,7 @@ dotenv.config();
 
 //create express app
 const app = express();
+app.set('trust proxy', 1); // Trust Render's proxy for HTTPS
 
 //function to manipulate database
 import { addClient, addMedic, addProgram, enrollClient } from "./db.js";
@@ -53,7 +54,7 @@ app.use(
       secure: process.env.NODE_ENV === "production" ? true : false, 
       maxAge: 1000 * 60 * 60 * 2, // 2 hours session duration
       httpOnly: true,
-      sameSite: "strict",
+      sameSite: process.env.NODE_ENV === "production" ? 'lax' : 'strict'
     },
   })
 );
