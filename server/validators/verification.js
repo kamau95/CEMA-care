@@ -47,5 +47,5 @@ export const isAuthenticated= async(req, res, next)=>{
         return next()//continue to the next middleware
     }
     console.log('User not authenticated, redirecting to /login');
-    res.redirect('/login');
+    return res.status(401).json({ success: false, message: 'Unauthorized, please log in' });
 }

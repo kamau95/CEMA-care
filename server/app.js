@@ -52,6 +52,8 @@ app.use(
     cookie: {
       secure: process.env.NODE_ENV === "production" ? true : false, 
       maxAge: 1000 * 60 * 60 * 2, // 2 hours session duration
+      httpOnly: true,
+      sameSite: "strict",
     },
   })
 );
@@ -148,9 +150,16 @@ app.get("/login", (req, res) => {
 });
 
 app.post("/login", verifyPassword, (req, res) => {
-  //reaching here user is verified
-  res.json({ success: true, redirectUrl: "/search-client" });
+  req.session.userId = req.body.username;
+  req.session.save(err => {
+    if (err) {
+      console.error('Session save error:', err);
+      return res.status(500).json({ success: false, message: 'Session error' });
+    }
+    res.json({ success: true, redirectUrl: "/search-client" });
+  });
 });
+
 
 app.get("/create-program", isAuthenticated, (req, res) => {
   res.render("create-program");
