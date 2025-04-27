@@ -3,37 +3,53 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Health Program Management - Search Clients</title>
+  <title>Search for a Client - Health Program Management</title>
   <link rel="stylesheet" href="/css/search-client.css">
 </head>
 <body>
-  <aside class="sidebar">
-    <h2>Health Program Management</h2>
-    <ul>
-      <li><a href="create-program">Create a Health Program</a></li>
-      <li><a href="register-client">Register a New Client</a></li>
-      <li><a href="enroll-client">Enroll a Client in Programs</a></li>
-      <li><a href="search-client" class="active">Search for a Client</a></li>
-      <li><a href="#">View Client Profile</a></li>
-    </ul>
-  </aside>
-
-  <main class="main-content">
-    <div class="search-container">
-      <h1>Search Clients</h1>
-      <div class="form-group">
-        <label for="search">Search by Name</label>
-        <input type="text" id="search" placeholder="Enter client name" />
-      </div>
-      <div class="client-list">
-        <h2>Results</h2>
+  <div class="container">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <h1 class="sidebar-title">Health Program</h1>
+      <nav>
         <ul>
-          <!-- Placeholder for client results, populated by JavaScript -->
-          <li><a href="client-profile.html">John Doe</a></li>
-          <li><a href="client-profile.html">Jane Smith</a></li>
+          <li class="sidebar-item">
+            <a href="/create-program" class="sidebar-link">Create a Health Program</a>
+          </li>
+          <li class="sidebar-item">
+            <a href="/register-client" class="sidebar-link">Register a New Client</a>
+          </li>
+          <li class="sidebar-item">
+            <a href="/enroll-client" class="sidebar-link">Enroll a Client in Programs</a>
+          </li>
+          <li class="sidebar-item active">
+            <a href="/search-client" class="sidebar-link">Search for a Client</a>
+          </li>
         </ul>
+      </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+      <div class="form-container">
+        <h2 class="form-title">Search for a Client</h2>
+        <form class="form" id="search-form">
+          <div class="form-group">
+            <label for="client-contact" class="form-label">Client Contact</label>
+            <input
+              type="text"
+              id="client-contact"
+              class="form-input"
+              placeholder="e.g., john@example.com or +1234567890"
+              required
+            >
+          </div>
+          <button type="submit" class="form-button">Search</button>
+          <p id="error-message" class="error-message" style="color: red; display: block; min-height: 20px;"></p>
+        </form>
       </div>
-    </div>
-  </main>
+    </main>
+  </div>
+  <script src="/js/search-client.js"></script>
 </body>
 </html>

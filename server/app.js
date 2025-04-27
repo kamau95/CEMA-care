@@ -44,6 +44,87 @@ app.get("/", (req, res) => {
   res.render("login");
 });
 
+app.get("/search-client", isAuthenticated, (req, res) => {
+  res.render("search-client");
+});
+
+app.post("/search-client", isAuthenticated, async (req, res) => {
+  const { clientContact } = req.body || {};
+
+  if (!clientContact) {
+    console.log("Missing clientContact:", req.body);
+    return res.status(400).json({
+      success: false,
+      message: "Client contact is required",
+    });
+  }
+
+  try {
+    const [clients] = await pool.query(
+      'SELECT id FROM clients WHERE contact = ?',
+      [clientContact]
+    );
+    if (clients.length > 0) {
+      console.log("Client found:", clients[0].id);
+      return res.status(200).json({
+        success: true,
+        clientId: clients[0].id,
+      });
+    } else {
+      console.log("No client found for contact:", clientContact);
+      return res.status(404).json({
+        success: false,
+        message: "No such client found",
+      });
+    }
+  } catch (error) {
+    console.error("Error searching clients:", error);
+    return res.status(500).json({
+      success: false,
+      message: "Server error",
+    });
+  }
+});
+
+// Client Profile Route
+app.get("/client-profile/:id", isAuthenticated, async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    // Fetch client details
+    const [clients] = await pool.query(
+      'SELECT id, name, age, gender, contact FROM clients WHERE id = ?',
+      [id]
+    );
+    if (clients.length === 0) {
+      console.log("Client not found for id:", id);
+      return res.render("client-profile", { client: null, programs: [] });
+    }
+
+    // Fetch enrolled programs
+    const [programs] = await pool.query(
+      `SELECT p.name, e.enrollment_date
+       FROM enrollment e
+       JOIN programs p ON e.program_id = p.id
+       WHERE e.client_id = ?`,
+      [id]
+    );
+
+    console.log("Client profile:", { client: clients[0], programs });
+    res.render("client-profile", {
+      client: clients[0],
+      programs,
+    });
+  } catch (error) {
+    console.error("Error fetching client profile:", error);
+    res.status(500).render("client-profile", {
+      client: null,
+      programs: [],
+      error: "Server error",
+    });
+  }
+});
+
 // Login form page
 app.get("/login", (req, res) => {
   res.render("login");

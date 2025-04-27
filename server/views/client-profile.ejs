@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Client Profile - Health Program Management</title>
+  <link rel="stylesheet" href="/css/client-profile.css">
+</head>
+<body>
+  <div class="container">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <h1 class="sidebar-title">Health Program</h1>
+      <nav>
+        <ul>
+          <li class="sidebar-item">
+            <a href="/create-program" class="sidebar-link">Create a Health Program</a>
+          </li>
+          <li class="sidebar-item">
+            <a href="/register-client" class="sidebar-link">Register a New Client</a>
+          </li>
+          <li class="sidebar-item">
+            <a href="/enroll-client" class="sidebar-link">Enroll a Client in Programs</a>
+          </li>
+          <li class="sidebar-item">
+            <a href="/search-client" class="sidebar-link">Search for a Client</a>
+          </li>
+        </ul>
+      </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+      <div class="profile-container">
+        <h2 class="profile-title">Client Profile</h2>
+        <% if (client) { %>
+          <div class="client-details">
+            <h3>Client Information</h3>
+            <p><strong>Name:</strong> <%= client.name %></p>
+            <p><strong>Age:</strong> <%= client.age %></p>
+            <p><strong>Gender:</strong> <%= client.gender %></p>
+            <p><strong>Contact:</strong> <%= client.contact %></p>
+          </div>
+          <div class="enrolled-programs">
+            <h3>Enrolled Programs</h3>
+            <% if (programs.length > 0) { %>
+              <table class="programs-table">
+                <thead>
+                  <tr>
+                    <th>Program Name</th>
+                    <th>Enrollment Date</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <% programs.forEach(program => { %>
+                    <tr>
+                      <td><%= program.name %></td>
+                      <td><%= new Date(program.enrollment_date).toLocaleDateString() %></td>
+                    </tr>
+                  <% }) %>
+                </tbody>
+              </table>
+            <% } else { %>
+              <p>No programs enrolled.</p>
+            <% } %>
+          </div>
+        <% } else { %>
+          <p class="error-message">Client not found.</p>
+        <% } %>
+      </div>
+    </main>
+  </div>
+</body>
+</html>
